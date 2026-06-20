@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react'
 import { useRoleTheme } from "../hooks/useRoleTheme";
-import Sidebar from '../components/common/sidebar';
+import Sidebar from "../components/common/Sidebar";
 import Header from '../components/common/Header';
 import { Outlet } from 'react-router-dom';
 import RoleLayout from './RoleLayout';

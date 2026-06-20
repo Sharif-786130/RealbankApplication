@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "../components/common/sidebar";
+import Sidebar from "../components/common/Sidebar";
 import Header from "../components/common/Header";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -23,33 +23,7 @@ export default function AdminLayout() {
     ];
 
     return (
-        // <div className={`flex h-screen  overflow-hidden ${theme.layoutBg}`}>
-
-        //     {/* sidebar */}
-
-        //     <Sidebar
-        //         menuItems={menuItems}
-        //         isOpen={isOpen}
-        //         setIsOpen={setIsOpen}
-                
-        //     />
-
-
-        //     {/* main content */}
-        //     <div className="flex-1 flex flex-col min-h-screen w-full">
-
-        //         <Header 
-        //             isOpen={isOpen}
-        //             setIsOpen={setIsOpen}
-        //         />
-
-        //         <div className="p-6 flex-1 overflow-auto">
-        //             <Outlet />
-        //         </div>
-        //     </div>
-
-        // </div>
-
+     
         <RoleLayout
             menuItems={adminMenuItems}
             title="Admin Dashboard"

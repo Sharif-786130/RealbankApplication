@@ -6,7 +6,7 @@ import { baseQueryWithReauth } from "./baseQueryWithReauth";
 
 export const authApi = createApi({
     reducerPath: "authApi",
-    baseQuery: baseQueryWithReauth("http://localhost:8080"),
+   baseQuery: baseQueryWithReauth(import.meta.env.VITE_API_URL),
     endpoints: (builder) => ({
         login: builder.mutation({
             query: (credentials) => ({

@@ -1,9 +1,9 @@
-import { createApi } from "@reduxjs/toolkit/query/react"; // ✅ remove fetchBaseQuery
-import { baseQueryWithReauth } from "./baseQueryWithReauth"; // ✅ add this
+import { createApi } from "@reduxjs/toolkit/query/react"; // 
+import { baseQueryWithReauth } from "./baseQueryWithReauth"; // 
 
 export const loanApi = createApi({
     reducerPath: "loanApi",
-    baseQuery: baseQueryWithReauth("http://localhost:8080"), // ✅ replace fetchBaseQuery
+  baseQuery: baseQueryWithReauth(import.meta.env.VITE_API_URL),
     tagTypes: ["Loans"],
     endpoints: (builder) => ({
 
@@ -16,20 +16,12 @@ export const loanApi = createApi({
             invalidatesTags: ["Loans"],
         }),
 
-        // getAllLoans: builder.query({
-        //     query: () => "/api/loans",
-        //     providesTags: ["Loans"],
-        // }),
 
         getAllLoans: builder.query({
-            query: () => "/api/loans?page=0&size=1000", // ← fetch all, no pagination UI needed
+            query: () => "/api/loans?page=0&size=1000", 
             providesTags: ["Loans"],
         }),
 
-        // getLoanByCustomer: builder.query({
-        //     query: (customerId) => `/api/loans/customer/${customerId}`,
-        //     providesTags: ["Loans"],
-        // }),
 
         getLoanByCustomer: builder.query({
             query: (customerId) => `/api/loans/customer/${customerId}?page=0&size=1000`, // ← same
@@ -56,7 +48,7 @@ export const loanApi = createApi({
 });
 
 export const {
-    useCreateLoanMutation,       // ✅ officer creates + customer applies
+    useCreateLoanMutation,       
     useGetAllLoansQuery,
     useGetLoanByCustomerQuery,
     useApproveLoanMutation,

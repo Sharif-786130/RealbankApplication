@@ -18,7 +18,7 @@ export default function CreateLoanPage() {
         setLoading(true);
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:8080/api/loans", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/loans`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export default function CreateLoanPage() {
 
     return (
         <div className="space-y-6">
-            
+
             <h1 className="text-2xl font-bold">Create New Loan</h1>
 
             <div className="bg-white p-6 rounded-xl shadow space-y-4 max-w-lg">

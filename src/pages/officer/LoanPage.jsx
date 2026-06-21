@@ -30,8 +30,10 @@ export default function LoanPage() {
             });
             if (res.ok) {
                 setMessage("Loan created successfully!");
-                setForm({ customerId: "", loanType: "HOME_LOAN",
-                    loanAmount: "", tenureMonths: "", intrestRate: "" });
+                setForm({
+                    customerId: "", loanType: "HOME_LOAN",
+                    loanAmount: "", tenureMonths: "", intrestRate: ""
+                });
             } else {
                 setMessage("Error creating loan");
             }
@@ -58,7 +60,7 @@ function LoanList() {
 
     const fetchLoans = async () => {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:8080/api/loans", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/loans`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
         const data = await res.json();

@@ -18,7 +18,7 @@ export default function CreateAccountPage() {
         setLoading(true);
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://localhost:8080/api/account/create", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/account/create`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

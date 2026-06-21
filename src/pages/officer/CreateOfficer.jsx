@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCreateOfficerMutation } from "../../api/officerApi"; // ✅ fixed path
+import { Eye, EyeOff } from "lucide-react";
 
 export default function CreateOfficer() {
     const [createdOfficerId, setCreatedOfficerId] = useState("");
@@ -12,6 +13,8 @@ export default function CreateOfficer() {
         password: "",
         role: "",
     });
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const [createOfficer, { isLoading }] = useCreateOfficerMutation();
 
@@ -77,8 +80,18 @@ export default function CreateOfficer() {
 
                         <div>
                             <label className="block text-sm font-medium text-gray-600 mb-1">Temporary Password</label>
-                            <input name="password" type="password" value={form.password} onChange={handleChange} required
-                                className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                            <div className="relative">
+                                <input name="password" type={showPassword ? "text" : "password"} value={form.password} onChange={handleChange} required
+                                    className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                </button>
+                            </div>
                         </div>
 
                         <div className="md:col-span-2">

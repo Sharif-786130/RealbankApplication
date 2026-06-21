@@ -19,6 +19,43 @@ function KycPill({ status }) {
     );
 }
 
+function KycActionButtons({ c, loadingId, handleKyc }) {
+    return (
+        <div className="flex flex-wrap gap-2">
+            {c.kycStatus !== "VERIFIED" && (
+                <button
+                    disabled={loadingId === `${c.customerId}-VERIFIED`}
+                    onClick={() => handleKyc(c.customerId, "VERIFIED")}
+                    className="bg-green-100 text-green-700 hover:bg-green-200
+                               px-3 py-1 rounded-lg text-xs font-medium
+                               transition disabled:opacity-50">
+                    ✓ Verify
+                </button>
+            )}
+            {c.kycStatus !== "REJECTED" && (
+                <button
+                    disabled={loadingId === `${c.customerId}-REJECTED`}
+                    onClick={() => handleKyc(c.customerId, "REJECTED")}
+                    className="bg-red-100 text-red-700 hover:bg-red-200
+                               px-3 py-1 rounded-lg text-xs font-medium
+                               transition disabled:opacity-50">
+                    ✗ Reject
+                </button>
+            )}
+            {c.kycStatus !== "PENDING" && (
+                <button
+                    disabled={loadingId === `${c.customerId}-PENDING`}
+                    onClick={() => handleKyc(c.customerId, "PENDING")}
+                    className="bg-yellow-100 text-yellow-700 hover:bg-yellow-200
+                               px-3 py-1 rounded-lg text-xs font-medium
+                               transition disabled:opacity-50">
+                    Reset
+                </button>
+            )}
+        </div>
+    );
+}
+
 export default function AdminKycVerification() {
     const navigate = useNavigate();
     const { data: customers = [], isLoading, isError, refetch } = useGetAllCustomersAdminQuery();
@@ -52,9 +89,9 @@ export default function AdminKycVerification() {
         <div className="space-y-6">
 
             {/* Header */}
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-800">KYC Verification</h1>
+                    <h1 className="text-xl sm:text-2xl font-bold text-gray-800">KYC Verification</h1>
                     <p className="text-sm text-gray-400 mt-0.5">
                         Verify or reject customer KYC documents
                     </p>
@@ -74,17 +111,17 @@ export default function AdminKycVerification() {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4">
-                <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-4 text-center">
-                    <p className="text-2xl font-bold text-yellow-600">{pending}</p>
+            <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-3 sm:p-4 text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-yellow-600">{pending}</p>
                     <p className="text-xs text-yellow-500 mt-1">Pending</p>
                 </div>
-                <div className="bg-green-50 border border-green-100 rounded-xl p-4 text-center">
-                    <p className="text-2xl font-bold text-green-600">{verified}</p>
+                <div className="bg-green-50 border border-green-100 rounded-xl p-3 sm:p-4 text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-green-600">{verified}</p>
                     <p className="text-xs text-green-500 mt-1">Verified</p>
                 </div>
-                <div className="bg-red-50 border border-red-100 rounded-xl p-4 text-center">
-                    <p className="text-2xl font-bold text-red-600">{rejected}</p>
+                <div className="bg-red-50 border border-red-100 rounded-xl p-3 sm:p-4 text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-red-600">{rejected}</p>
                     <p className="text-xs text-red-500 mt-1">Rejected</p>
                 </div>
             </div>
@@ -92,7 +129,7 @@ export default function AdminKycVerification() {
             {/* Info banner */}
             <div className="flex items-center gap-2 bg-blue-50 border border-blue-100
                             text-blue-700 rounded-xl px-4 py-3 text-sm">
-                <ShieldCheck size={16} />
+                <ShieldCheck size={16} className="flex-shrink-0" />
                 <span>Verify Aadhaar, PAN and address proof before approving KYC.</span>
             </div>
 
@@ -123,9 +160,39 @@ export default function AdminKycVerification() {
                 </div>
             )}
 
-            {/* Table */}
+            {/* Mobile card list */}
             {!isLoading && filtered.length > 0 && (
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
+                <div className="flex flex-col gap-3 md:hidden">
+                    {filtered.map((c, index) => (
+                        <div key={c.customerId} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 space-y-2">
+                            <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-400">#{index + 1} · {c.customerNumber}</span>
+                                <KycPill status={c.kycStatus} />
+                            </div>
+
+                            <div>
+                                <p className="font-medium text-gray-800">{c.firstName} {c.lastName}</p>
+                                <p className="text-xs text-gray-500 break-all">{c.email}</p>
+                            </div>
+
+                            <div className="flex justify-between text-xs text-gray-500 pt-1 border-t border-gray-50">
+                                <span>Aadhaar: <span className="font-mono">{c.aadhaarNumber || "—"}</span></span>
+                            </div>
+                            <div className="flex justify-between text-xs text-gray-500">
+                                <span>PAN: <span className="font-mono">{c.panNumber || "—"}</span></span>
+                            </div>
+
+                            <div className="pt-2 border-t border-gray-50">
+                                <KycActionButtons c={c} loadingId={loadingId} handleKyc={handleKyc} />
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {/* Desktop table */}
+            {!isLoading && filtered.length > 0 && (
+                <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
                             <tr className="text-xs text-gray-400 uppercase tracking-wide border-b border-gray-50">
@@ -161,38 +228,7 @@ export default function AdminKycVerification() {
                                         <KycPill status={c.kycStatus} />
                                     </td>
                                     <td className="px-4 py-3">
-                                        <div className="flex gap-2">
-                                            {c.kycStatus !== "VERIFIED" && (
-                                                <button
-                                                    disabled={loadingId === `${c.customerId}-VERIFIED`}
-                                                    onClick={() => handleKyc(c.customerId, "VERIFIED")}
-                                                    className="bg-green-100 text-green-700 hover:bg-green-200
-                                                               px-3 py-1 rounded-lg text-xs font-medium
-                                                               transition disabled:opacity-50">
-                                                    ✓ Verify
-                                                </button>
-                                            )}
-                                            {c.kycStatus !== "REJECTED" && (
-                                                <button
-                                                    disabled={loadingId === `${c.customerId}-REJECTED`}
-                                                    onClick={() => handleKyc(c.customerId, "REJECTED")}
-                                                    className="bg-red-100 text-red-700 hover:bg-red-200
-                                                               px-3 py-1 rounded-lg text-xs font-medium
-                                                               transition disabled:opacity-50">
-                                                    ✗ Reject
-                                                </button>
-                                            )}
-                                            {c.kycStatus !== "PENDING" && (
-                                                <button
-                                                    disabled={loadingId === `${c.customerId}-PENDING`}
-                                                    onClick={() => handleKyc(c.customerId, "PENDING")}
-                                                    className="bg-yellow-100 text-yellow-700 hover:bg-yellow-200
-                                                               px-3 py-1 rounded-lg text-xs font-medium
-                                                               transition disabled:opacity-50">
-                                                    Reset
-                                                </button>
-                                            )}
-                                        </div>
+                                        <KycActionButtons c={c} loadingId={loadingId} handleKyc={handleKyc} />
                                     </td>
                                 </tr>
                             ))}

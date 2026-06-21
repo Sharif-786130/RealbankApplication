@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCreateAdminMutation } from "../../api/adminApi"; // ✅ correct import
+import { Eye, EyeOff } from "lucide-react";
 
 export default function CreateAdmin() {
     const [createAdmin, { isLoading }] = useCreateAdminMutation(); // ✅ correct hook usage
@@ -13,6 +14,7 @@ export default function CreateAdmin() {
 
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => { // ✅ was completely missing
         const { name, value } = e.target;
@@ -57,14 +59,35 @@ export default function CreateAdmin() {
                             <label className="block text-sm font-medium text-gray-600 mb-1 capitalize">
                                 {field}
                             </label>
-                            <input
-                                name={field}
-                                placeholder={`Enter ${field}`}
-                                type={field === "password" ? "password" : "text"}
-                                value={form[field]}
-                                onChange={handleChange} // ✅ now exists
-                                className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            />
+                            {field === "password" ? (
+                                <div className="relative">
+                                    <input
+                                        name={field}
+                                        placeholder={`Enter ${field}`}
+                                        type={showPassword ? "text" : "password"}
+                                        value={form[field]}
+                                        onChange={handleChange}
+                                        className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword((prev) => !prev)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                        tabIndex={-1}
+                                    >
+                                        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </button>
+                                </div>
+                            ) : (
+                                <input
+                                    name={field}
+                                    placeholder={`Enter ${field}`}
+                                    type="text"
+                                    value={form[field]}
+                                    onChange={handleChange}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                />
+                            )}
                         </div>
                     ))}
 

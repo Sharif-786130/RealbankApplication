@@ -16,7 +16,7 @@ export const adminApi = createApi({
     //         return headers;
     //     },
     // }),
-    baseQuery: baseQueryWithReauth("http://localhost:8080"),
+baseQuery: baseQueryWithReauth(import.meta.env.VITE_API_URL),
     tagTypes: ["Admin", "AdminAccounts", "AdminCustomers"],
     endpoints: (builder) => ({
         getAdmins: builder.query({

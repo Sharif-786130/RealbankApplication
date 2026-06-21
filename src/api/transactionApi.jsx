@@ -3,17 +3,8 @@ import { baseQueryWithReauth } from "./baseQueryWithReauth";
 
 export const transactionApi = createApi({
     reducerPath: "transactionApi",
-    // baseQuery: fetchBaseQuery({
-    //     baseUrl: "http://localhost:8080/api/transactions",
-    //     prepareHeaders: (headers, { getState }) => {
-    //         const token = getState().auth.accessToken;
-    //         if (token) {
-    //             headers.set("Authorization", `Bearer ${token}`);
-    //         }
-    //         return headers;
-    //     },
-    // }),
-      baseQuery: baseQueryWithReauth("http://localhost:8080/api/transactions"),
+ 
+    baseQuery: baseQueryWithReauth(`${import.meta.env.VITE_API_URL}/api/transactions`),
     endpoints: (builder) => ({
         getTransactionsByCustomer: builder.query({
             query: (customerId) => `/customer/${customerId}`,

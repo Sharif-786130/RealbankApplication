@@ -13,7 +13,7 @@ export const officerApi = createApi({
     //         return headers;
     //     },
     // }),
-    baseQuery: baseQueryWithReauth("http://localhost:8080"), 
+  baseQuery: baseQueryWithReauth(import.meta.env.VITE_API_URL),
     tagTypes: ["Officer"],
 
     endpoints: (builder) => ({

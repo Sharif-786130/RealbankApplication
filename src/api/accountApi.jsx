@@ -17,7 +17,7 @@ export const accountApi = createApi({
   //     return headers;
   //   },
   // }),
-  baseQuery: baseQueryWithReauth("http://localhost:8080/api/account"),
+baseQuery: baseQueryWithReauth(`${import.meta.env.VITE_API_URL}/api/account`),
   tagTypes: ["Accounts"],
   endpoints: (builder) => ({
 

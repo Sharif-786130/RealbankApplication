@@ -34,6 +34,5 @@ export const store = configureStore({
             .concat(transactionApi.middleware)
             .concat(cardApi.middleware)
             .concat(ticketApi.middleware),
-        // ),
 
 });

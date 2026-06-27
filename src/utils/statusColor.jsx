@@ -1,4 +1,3 @@
-
 export const statusColor = (status) => {
     switch (status) {
         case "APPROVED":

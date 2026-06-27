@@ -18,32 +18,6 @@ export default function SuperAdminLayout() {
     ];
 
     return (
-        // <div className={`flex h-screen  overflow-hidden ${theme.layoutBg}`}>
-
-        //     {/* sidebar */}
-
-        //     <Sidebar
-        //         menuItems={menuItems}
-        //         isOpen={isOpen}
-        //         setIsOpen={setIsOpen}
-                
-        //     />
-
-
-        //     {/* main content */}
-        //     <div className="flex-1 flex flex-col min-h-screen w-full">
-
-        //         <Header 
-        //             isOpen={isOpen}
-        //             setIsOpen={setIsOpen}
-        //         />
-
-        //         <div className="p-6 flex-1 overflow-auto">
-        //             <Outlet />
-        //         </div>
-        //     </div>
-
-        // </div>
 
         <RoleLayout
             menuItems={superAdminMenuItems}
